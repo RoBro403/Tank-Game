@@ -444,59 +444,41 @@ void checkStart() {
 
   if (player1Holding && player2Holding) {
 
-    if (!holdingToStart) {
-
-      holdingToStart = true;
-
+  if (!holdingToStart) {
+  
+   holdingToStart = true;
       startHoldTime = millis();
     }
 
+   unsigned long holdTime = millis() - startHoldTime;
 
-    unsigned long holdTime = millis() - startHoldTime;
-
-
-    lcd.clear();
-
+  lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("BOTH READY!");
 
+   lcd.setCursor(0, 1);
 
-    lcd.setCursor(0, 1);
-
-
-    if (holdTime < 1000) {
-
+   if (holdTime < 1000) {
       lcd.print("3...");
     }
-
     else if (holdTime < 2000) {
-
       lcd.print("2...");
     }
-
     else if (holdTime < 3000) {
-
       lcd.print("1...");
     }
-
-
     if (holdTime >= 3000) {
-
       startGame();
     }
 
   }
 
   else {
-
     holdingToStart = false;
 
-
-    lcd.clear();
-
+   lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("TANK BATTLE");
-
     lcd.setCursor(0, 1);
     lcd.print("HOLD TO START");
   }
@@ -572,9 +554,8 @@ void startGame() {
 void moveTanks() {
 
   if (millis() - lastMoveTime < moveDelay) {
-
     return;
-  }
+ }
 
   lastMoveTime = millis();
 
@@ -591,12 +572,11 @@ void moveTanks() {
 
   if (x_val2 < 350) {
 
-    if (tank1x < 15) {
-
+  if (tank1x < 15) {
       tank1x++;
     }
 
-    tank1Direction = 1;
+  tank1Direction = 1;
   }
 
 
@@ -605,11 +585,9 @@ void moveTanks() {
 
   if (x_val2 > 650) {
 
-    if (tank1x > 0) {
-
-      tank1x--;
+  if (tank1x > 0) {
+    tank1x--;
     }
-
     tank1Direction = -1;
   }
 
@@ -618,9 +596,7 @@ void moveTanks() {
   // Raw Y is HIGH
 
   if (y_val2 > 650) {
-
     if (tank1y > 0) {
-
       tank1y--;
     }
   }
@@ -630,9 +606,7 @@ void moveTanks() {
   // Raw Y is LOW
 
   if (y_val2 < 350) {
-
     if (tank1y < 1) {
-
       tank1y++;
     }
   }
@@ -648,12 +622,9 @@ void moveTanks() {
   // LEFT
 
   if (x_val1 < 350) {
-
     if (tank2x > 0) {
-
       tank2x--;
     }
-
     tank2Direction = -1;
   }
 
@@ -661,12 +632,9 @@ void moveTanks() {
   // RIGHT
 
   if (x_val1 > 650) {
-
     if (tank2x < 15) {
-
       tank2x++;
     }
-
     tank2Direction = 1;
   }
 
@@ -674,9 +642,7 @@ void moveTanks() {
   // UP
 
   if (y_val1 < 350) {
-
     if (tank2y > 0) {
-
       tank2y--;
     }
   }
@@ -685,9 +651,7 @@ void moveTanks() {
   // DOWN
 
   if (y_val1 > 650) {
-
     if (tank2y < 1) {
-
       tank2y++;
     }
   }
@@ -714,15 +678,10 @@ void shoot() {
 
   if (previousButton2 == HIGH &&
       currentButton2 == LOW) {
-
     if (!tank1BulletActive) {
-
       tank1BulletActive = true;
-
       tank1BulletX = tank1x + tank1Direction;
-
       tank1BulletY = tank1y;
-
       tank1BulletDirection = tank1Direction;
     }
   }
@@ -734,15 +693,10 @@ void shoot() {
 
   if (previousButton1 == HIGH &&
       currentButton1 == LOW) {
-
     if (!tank2BulletActive) {
-
       tank2BulletActive = true;
-
       tank2BulletX = tank2x + tank2Direction;
-
       tank2BulletY = tank2y;
-
       tank2BulletDirection = tank2Direction;
     }
   }
@@ -760,7 +714,6 @@ void shoot() {
 void moveBullets() {
 
   if (millis() - lastBulletTime < bulletDelay) {
-
     return;
   }
 
@@ -770,13 +723,9 @@ void moveBullets() {
   // Tank #1 bullet
 
   if (tank1BulletActive) {
-
     tank1BulletX += tank1BulletDirection;
-
-
     if (tank1BulletX < 0 ||
         tank1BulletX > 15) {
-
       tank1BulletActive = false;
     }
   }
@@ -785,13 +734,9 @@ void moveBullets() {
   // Tank #2 bullet
 
   if (tank2BulletActive) {
-
     tank2BulletX += tank2BulletDirection;
-
-
     if (tank2BulletX < 0 ||
         tank2BulletX > 15) {
-
       tank2BulletActive = false;
     }
   }
@@ -807,15 +752,11 @@ void checkHits() {
   // Tank #1 → Tank #2
 
   if (tank1BulletActive) {
-
     if (tank1BulletX == tank2x &&
         tank1BulletY == tank2y) {
-
       tank1BulletActive = false;
-
       tank2Lives--;
-
-      tank2Hit();
+    tank2Hit();
     }
   }
 
@@ -823,14 +764,10 @@ void checkHits() {
   // Tank #2 → Tank #1
 
   if (tank2BulletActive) {
-
     if (tank2BulletX == tank1x &&
         tank2BulletY == tank1y) {
-
       tank2BulletActive = false;
-
       tank1Lives--;
-
       tank1Hit();
     }
   }
@@ -858,7 +795,6 @@ void tank2Hit() {
 
 
   if (tank2Lives <= 0) {
-
     endGame(1);
   }
 }
@@ -885,7 +821,6 @@ void tank1Hit() {
 
 
   if (tank1Lives <= 0) {
-
     endGame(2);
   }
 }
@@ -947,12 +882,10 @@ void drawGame() {
   lcd.setCursor(tank1x, tank1y);
 
   if (tank1Direction == 1) {
-
     lcd.write(byte(0));
   }
 
   else {
-
     lcd.write(byte(1));
   }
 
@@ -964,12 +897,10 @@ void drawGame() {
   lcd.setCursor(tank2x, tank2y);
 
   if (tank2Direction == 1) {
-
     lcd.write(byte(2));
   }
 
   else {
-
     lcd.write(byte(3));
   }
 
@@ -979,12 +910,9 @@ void drawGame() {
   // ====================================================
 
   if (tank1BulletActive) {
-
     if (!(tank1BulletX == tank2x &&
           tank1BulletY == tank2y)) {
-
       lcd.setCursor(tank1BulletX, tank1BulletY);
-
       lcd.write(byte(4));
     }
   }
@@ -995,12 +923,9 @@ void drawGame() {
   // ====================================================
 
   if (tank2BulletActive) {
-
     if (!(tank2BulletX == tank1x &&
           tank2BulletY == tank1y)) {
-
       lcd.setCursor(tank2BulletX, tank2BulletY);
-
       lcd.write(byte(5));
     }
   }
@@ -1012,13 +937,10 @@ void drawGame() {
 
   if (hitEffect &&
       millis() - hitTime > 400) {
-
     digitalWrite(p1g, LOW);
     digitalWrite(p2g, LOW);
-
     digitalWrite(p1r, LOW);
     digitalWrite(p2r, LOW);
-
     hitEffect = false;
   }
 }
@@ -1047,11 +969,8 @@ void endGame(int winner) {
   // Tank #1 wins
 
   if (winner == 1) {
-
     lcd.print("PLAYER 1 WINS!");
-
     digitalWrite(p1g, HIGH);
-
     digitalWrite(p2r, HIGH);
   }
 
@@ -1059,11 +978,8 @@ void endGame(int winner) {
   // Tank #2 wins
 
   else {
-
     lcd.print("PLAYER 2 WINS!");
-
     digitalWrite(p2g, HIGH);
-
     digitalWrite(p1r, HIGH);
   }
 
@@ -1081,9 +997,7 @@ void endGame(int winner) {
 void gameOverAnimation() {
 
   if (millis() - lastGameOverBeep > 600) {
-
     lastGameOverBeep = millis();
-
     tone(buzzer, 1000, 250);
   }
 
@@ -1091,7 +1005,6 @@ void gameOverAnimation() {
   // Shut down after 5 seconds
 
   if (millis() - gameOverTime > 5000) {
-
     shutDownGame();
   }
 }
